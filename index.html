@@ -3,48 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ONG Exemplo — SPA</title>
-  <meta name="description" content="SPA básica em JavaScript vanilla com sistema simples de templates." />
-  <style>
-    :root{
-      --bg:#ffffff;--fg:#1f2937;--muted:#6b7280;--brand:#2563eb;--brand-2:#16a34a;
-      --card:#f8fafc;--border:#e5e7eb;--radius:14px;
-      --space-1:8px;--space-2:16px;--space-3:24px;--space-4:32px;--space-5:48px;--space-6:64px;
-      --container:1100px;
-      --shadow:0 6px 24px rgba(0,0,0,.08);
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial; color:var(--fg); background:var(--bg)}
-    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);z-index:20}
-    .nav{max-width:var(--container);margin:auto;display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2)}
-    .brand{font-weight:700;letter-spacing:.2px}
-    .spacer{flex:1}
-    a{color:var(--brand);text-decoration:none}
-    .tabs a{padding:10px 14px;border-radius:12px;color:var(--fg)}
-    .tabs a.active, .tabs a:hover{background:var(--card)}
-    main{max-width:var(--container);margin:0 auto;padding:var(--space-4) var(--space-2)}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--space-3)}
-    .col-12{grid-column:span 12}
-    .col-6{grid-column:span 6}
-    @media (max-width:900px){.col-6{grid-column:span 12}}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:var(--space-3);box-shadow:var(--shadow)}
-    h1,h2,h3{margin:0 0 var(--space-2)}
-    p{margin:0 0 var(--space-2);color:var(--muted)}
-    .btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid var(--border)}
-    .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-    .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef2ff;border:1px solid #e0e7ff;font-size:12px}
-    form{display:grid;gap:var(--space-2)}
-    label{font-weight:600}
-    input,select{padding:12px;border-radius:10px;border:1px solid var(--border);width:100%}
-    .muted{color:var(--muted)}
-  </style>
+  <title>ONG Exemplo — SPA Modular</title>
+  <meta name="description" content="SPA básica com JavaScript modular, estrutura de pastas e templates.">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
+  <header class="topbar">
     <nav class="nav">
-      <div class="brand">ONG Exemplo</div>
-      <div class="spacer"></div>
-      <div class="tabs" role="tablist" aria-label="Navegação principal">
+      <strong class="brand">ONG Exemplo</strong>
+      <div class="tabs">
         <a href="#/home" data-link>Home</a>
         <a href="#/projetos" data-link>Projetos</a>
         <a href="#/cadastro" data-link>Cadastro</a>
@@ -54,196 +21,10 @@
 
   <main id="app" aria-live="polite"></main>
 
-  <script>
-  // -------------------------
-  // Mini framework SPA + Templates (vanilla JS)
-  // -------------------------
-
-  // 1) "Estado" e dados de exemplo
-  const Store = {
-    projetos: [
-      { id: 1, nome: 'Horta Comunitária', categoria: 'Sustentabilidade', cidade: 'Mogi Guaçu', vagas: 12 },
-      { id: 2, nome: 'Aulas de Reforço', categoria: 'Educação', cidade: 'Porto', vagas: 5 },
-      { id: 3, nome: 'Oficina de Arte', categoria: 'Cultura', cidade: 'Lisboa', vagas: 8 },
-    ]
-  }
-
-  // 2) Sistema simples de templates em JS
-  //    Cada template é uma função que recebe "props" e retorna uma string HTML.
-  //    Você pode reutilizar partes (componentes) como funções também.
-
-  // Componentes reutilizáveis
-  const Components = {
-    ProjectCard: (p) => `
-      <article class="card" role="article" aria-labelledby="p-${p.id}-title">
-        <h3 id="p-${p.id}-title">${p.nome}</h3>
-        <p><span class="badge">${p.categoria}</span></p>
-        <p class="muted">Cidade: <strong>${p.cidade}</strong></p>
-        <p class="muted">Vagas: <strong>${p.vagas}</strong></p>
-        <a class="btn" href="#/cadastro?projeto=${p.id}">Quero participar</a>
-      </article>
-    `,
-  }
-
-  // Páginas (views)
-  const Templates = {
-    home: () => `
-      <section class="grid">
-        <div class="col-12">
-          <div class="card">
-            <h1>Educação, Arte e Inclusão Social</h1>
-            <p>Bem-vindo(a) à nossa ONG! Esta é uma Single Page Application (SPA) em JavaScript puro com um micro-sistema de templates.</p>
-            <a class="btn primary" href="#/projetos">Ver Projetos</a>
-          </div>
-        </div>
-      </section>
-    `,
-
-    projetos: ({ projetos }) => `
-      <section class="grid">
-        <div class="col-12"><h2>Projetos</h2><p class="muted">Escolha um projeto e inscreva-se.</p></div>
-        ${projetos.map(p => `<div class="col-6">${Components.ProjectCard(p)}</div>`).join('')}
-      </section>
-    `,
-
-    cadastro: ({ projetoSelecionado }) => `
-      <section class="grid">
-        <div class="col-12"><h2>Cadastro</h2><p class="muted">Preencha seus dados para participar.</p></div>
-        <div class="col-12">
-          <div class="card">
-            ${projetoSelecionado ? `<p class="muted">Você está se inscrevendo no projeto: <strong>${projetoSelecionado.nome}</strong></p>` : ''}
-            <form id="form-cadastro" novalidate>
-              <div class="grid">
-                <div class="col-6">
-                  <label for="nome">Nome Completo</label>
-                  <input id="nome" name="nome" type="text" required minlength="3" placeholder="Maria da Silva" />
-                </div>
-                <div class="col-6">
-                  <label for="email">E-mail</label>
-                  <input id="email" name="email" type="email" required placeholder="voce@exemplo.com" />
-                </div>
-                <div class="col-6">
-                  <label for="cpf">CPF</label>
-                  <input id="cpf" name="cpf" type="text" inputmode="numeric" pattern="\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}" placeholder="000.000.000-00" required />
-                </div>
-                <div class="col-6">
-                  <label for="tel">Telefone</label>
-                  <input id="tel" name="tel" type="tel" inputmode="tel" placeholder="(00) 90000-0000" required />
-                </div>
-                <div class="col-6">
-                  <label for="nasc">Data de Nascimento</label>
-                  <input id="nasc" name="nasc" type="date" required />
-                </div>
-                <div class="col-6">
-                  <label for="cidade">Cidade</label>
-                  <input id="cidade" name="cidade" type="text" required />
-                </div>
-                <div class="col-6">
-                  <label for="estado">Estado</label>
-                  <select id="estado" name="estado" required>
-                    <option value="" disabled selected>Selecione</option>
-                    <option>SP</option><option>RJ</option><option>MG</option><option>RS</option>
-                  </select>
-                </div>
-                <div class="col-6">
-                  <label for="cep">CEP</label>
-                  <input id="cep" name="cep" type="text" inputmode="numeric" pattern="\\d{5}-\\d{3}" placeholder="00000-000" required />
-                </div>
-              </div>
-              <div>
-                <button class="btn primary" type="submit">Enviar</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-    `,
-
-    notFound: () => `
-      <div class="card"><h2>404</h2><p class="muted">Página não encontrada.</p><a class="btn" href="#/home">Voltar</a></div>
-    `
-  }
-
-  // 3) Roteador (hash-based)
-  function parseQuery(hash){
-    const q = {}; const idx = hash.indexOf('?');
-    if(idx === -1) return q; const s = hash.slice(idx+1);
-    s.split('&').forEach(p=>{const [k,v] = p.split('='); q[decodeURIComponent(k)] = decodeURIComponent(v||'')});
-    return q;
-  }
-
-  function setActiveLink(route){
-    document.querySelectorAll('[data-link]').forEach(a=>{
-      const href = a.getAttribute('href')||'';
-      a.classList.toggle('active', href.includes(route));
-    })
-  }
-
-  function router(){
-    const hash = location.hash || '#/home';
-    const [path] = hash.replace('#/','').split('?');
-    setActiveLink(path||'home');
-    const params = parseQuery(hash);
-
-    let html = '';
-    if(path === '' || path === 'home'){
-      html = Templates.home();
-    } else if(path === 'projetos'){
-      html = Templates.projetos({ projetos: Store.projetos });
-    } else if(path === 'cadastro'){
-      const id = Number(params.projeto);
-      const projetoSelecionado = Store.projetos.find(p=>p.id===id);
-      html = Templates.cadastro({ projetoSelecionado });
-    } else {
-      html = Templates.notFound();
-    }
-
-    document.getElementById('app').innerHTML = html;
-
-    // hooks pós-render
-    if(path === 'cadastro') initCadastroForm();
-  }
-
-  // 4) Máscaras simples (CPF / CEP / Telefone) e validação básica
-  function maskCpf(v){
-    return v.replace(/\D/g,'').replace(/(\d{3})(\d)/,'$1.$2')
-            .replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})/,'$1-$2').slice(0,14)
-  }
-  function maskCep(v){
-    return v.replace(/\D/g,'').replace(/(\d{5})(\d)/,'$1-$2').slice(0,9)
-  }
-  function maskTel(v){
-    return v.replace(/\D/g,'').replace(/(\d{2})(\d)/,'($1) $2')
-            .replace(/(\d{5})(\d{4})/,'$1-$2').slice(0,15)
-  }
-
-  function initCadastroForm(){
-    const form = document.getElementById('form-cadastro');
-    if(!form) return;
-
-    const cpf = form.querySelector('#cpf');
-    const cep = form.querySelector('#cep');
-    const tel = form.querySelector('#tel');
-
-    cpf?.addEventListener('input', e=> e.target.value = maskCpf(e.target.value));
-    cep?.addEventListener('input', e=> e.target.value = maskCep(e.target.value));
-    tel?.addEventListener('input', e=> e.target.value = maskTel(e.target.value));
-
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      if(!form.checkValidity()){
-        form.reportValidity();
-        return;
-      }
-      const data = Object.fromEntries(new FormData(form).entries());
-      alert('Cadastro enviado!\\n' + JSON.stringify(data, null, 2));
-      location.hash = '#/home';
-    })
-  }
-
-  // 5) Inicialização
-  window.addEventListener('hashchange', router);
-  window.addEventListener('DOMContentLoaded', router);
-  </script>
+  <!-- Scripts modulares: organizados por funcionalidade -->
+  <script src="js/templates.js" defer></script>
+  <script src="js/store.js" defer></script>
+  <script src="js/router.js" defer></script>
+  <script src="js/app.js" defer></script>
 </body>
 </html>
