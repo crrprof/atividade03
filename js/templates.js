@@ -1,6 +1,3 @@
-// js/templates.js
-// Responsável apenas por TEMPLATES (strings de HTML) e componentes simples.
-
 const Components = {
   ProjectCard: (p) => `
     <article class="card" role="article" aria-labelledby="p-${p.id}-title">

@@ -1,6 +1,3 @@
-// js/router.js
-// Responsável por ROTEAMENTO e leitura de parâmetros (hash-based).
-
 function parseQuery(hash){
   const q = {}; const i = hash.indexOf('?');
   if(i === -1) return q;
@@ -39,7 +36,6 @@ function router(){
 
   document.getElementById('app').innerHTML = html;
 
-  // pós-render: eventos específicos da view
   if(path === 'cadastro'){
     const form = document.getElementById('form-cadastro');
     form?.addEventListener('submit', (e)=>{

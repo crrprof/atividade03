@@ -1,6 +1,3 @@
-// js/store.js
-// Responsável por DADOS (estado simples / mock).
-
 const Store = {
   projetos: [
     { id: 1, nome: 'Horta Comunitária', categoria: 'Sustentabilidade', cidade: 'Mogi Guaçu', vagas: 12 },
